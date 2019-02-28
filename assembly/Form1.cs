@@ -189,7 +189,11 @@ namespace assembly
         void GenerateVHDL() {
             int pc = 0;
             foreach (string[] line in code) {
-                if (line.Length < 3) MessageBox.Show(line.Length.ToString());
+                if (line.Length < 3)
+                {
+                    MessageBox.Show("Algo anda mal en el código");
+
+                }
                 Instruction content = encoding[line[1]];
                 string vhdlLine = content.Value;
                 if (content.Type == TypeOfInstruction.PROGRAM) {
