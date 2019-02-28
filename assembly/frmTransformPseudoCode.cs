@@ -166,8 +166,14 @@ namespace assembly
             Initialize();
             foreach (string line in txInput.Lines)
             {
-                string[] lineComponents = line.Trim().Replace("(", "").Replace(")", "").Replace("{", "").Replace(";", "").Split(' ');
-                code.Push(lineComponents);
+                string reducedLine = line
+                    .Replace(";", "").Replace(" ( ", " ").Replace(" (", " ").Replace("( ", " ").Replace(" ) ", " ")
+                    .Replace(" )", " ").Replace(") ", " ").Replace("(", " ").Replace(")", " ").Trim();
+                if (line.Length > 0) {
+                    string[] lineComponents = reducedLine.Split(' ');
+                    code.Push(lineComponents);
+                }
+            
             }
         }
         void Initialize()
