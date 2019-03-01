@@ -1,7 +1,7 @@
 # pseudocode-to-vhdl-compiler
 The executable is located in the folder:
 > assembly/bin/debug   
-### Example pseudocode simple
+### Example pseudocode easy
 ```
 input a;
 input b
