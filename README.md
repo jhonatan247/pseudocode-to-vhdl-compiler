@@ -33,6 +33,7 @@ end;
 ```
 input a;
 input b
+
 // comment
 while a > 0
   if a = 1
