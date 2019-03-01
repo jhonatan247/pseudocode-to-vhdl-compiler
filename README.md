@@ -44,7 +44,7 @@ while a > 0
     b *= 2
   endif
   a -= 1;
-end
+endwhile
 a += b
 c = a + c
 
