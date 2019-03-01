@@ -123,6 +123,10 @@ namespace assembly.Data
                 "{4}{0}loadA{0}{1}\n" +
                 "{0}subA{0}{2}\n" +
                 "{0}jnz{0}{3}\n"),
+            new Command("while=",
+                "{4}{0}loadA{0}{1}\n" +
+                "{0}subA{0}{2}\n" +
+                "{0}jnz{0}{3}\n"),
             new Command("while!=",
                 "{4}{0}loadA{0}{1}\n" +
                 "{0}subA{0}{2}\n" +

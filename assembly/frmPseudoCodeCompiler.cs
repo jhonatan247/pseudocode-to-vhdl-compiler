@@ -71,7 +71,10 @@ namespace assembly
                 string reducedLine = line
                     .Replace(";", "").Replace(" ( ", " ").Replace(" (", " ").Replace("( ", " ").Replace(" ) ", " ")
                     .Replace(" )", " ").Replace(") ", " ").Replace("(", " ").Replace(")", " ").Trim().ToLower();
-                if (line.Length > 0) {
+                if (line.Length > 0 ) {
+                    if (line.Length >= 2 && line.Substring(0, 2) == "//") {
+                        continue;
+                    }
                     string[] lineComponents = reducedLine.Split();
                     code.Push(lineComponents);
                 }
