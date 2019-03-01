@@ -1,6 +1,6 @@
 ﻿namespace assembly
 {
-    partial class frmTransformPseudoCode
+    partial class frmPseudoCodeCompiler
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmTransformPseudoCode));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmPseudoCodeCompiler));
             this.txInput = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnGo = new System.Windows.Forms.Button();
@@ -36,6 +36,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.cbSeparator = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.btnHelp = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -43,6 +44,7 @@
             // txInput
             // 
             this.txInput.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txInput.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txInput.Location = new System.Drawing.Point(0, 39);
             this.txInput.Multiline = true;
             this.txInput.Name = "txInput";
@@ -51,6 +53,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btnHelp);
             this.panel1.Controls.Add(this.btnGo);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel1.Location = new System.Drawing.Point(0, 365);
@@ -65,7 +68,7 @@
             this.btnGo.Name = "btnGo";
             this.btnGo.Size = new System.Drawing.Size(75, 23);
             this.btnGo.TabIndex = 0;
-            this.btnGo.Text = "Go";
+            this.btnGo.Text = "Compile";
             this.btnGo.UseVisualStyleBackColor = true;
             this.btnGo.Click += new System.EventHandler(this.btnGo_Click);
             // 
@@ -113,7 +116,18 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Insert pseudo code";
             // 
-            // frmTransformPseudoCode
+            // btnHelp
+            // 
+            this.btnHelp.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.btnHelp.Location = new System.Drawing.Point(21, 10);
+            this.btnHelp.Name = "btnHelp";
+            this.btnHelp.Size = new System.Drawing.Size(75, 23);
+            this.btnHelp.TabIndex = 1;
+            this.btnHelp.Text = "Help";
+            this.btnHelp.UseVisualStyleBackColor = true;
+            this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
+            // 
+            // frmPseudoCodeCompiler
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
@@ -123,8 +137,9 @@
             this.Controls.Add(this.panel2);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(442, 447);
-            this.Name = "frmTransformPseudoCode";
-            this.Text = "frmTransformPseudoCode";
+            this.Name = "frmPseudoCodeCompiler";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Pseudo code compiler";
             this.Load += new System.EventHandler(this.frmTransformPseudoCode_Load);
             this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
@@ -143,5 +158,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox cbSeparator;
+        private System.Windows.Forms.Button btnHelp;
     }
 }

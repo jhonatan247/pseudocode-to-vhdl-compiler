@@ -46,11 +46,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
+    <Compile Include="Data\DataProvider.cs" />
+    <Compile Include="Enums\TypeOfInstruction.cs" />
+    <Compile Include="Enums\CommandType.cs" />
+    <Compile Include="frmAssemblyTraducer.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="frmAssemblyTraducer.Designer.cs">
+      <DependentUpon>frmAssemblyTraducer.cs</DependentUpon>
     </Compile>
     <Compile Include="frmOutput.cs">
       <SubType>Form</SubType>
@@ -58,22 +61,26 @@
     <Compile Include="frmOutput.Designer.cs">
       <DependentUpon>frmOutput.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmTransformPseudoCode.cs">
+    <Compile Include="frmPseudoCodeCompiler.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmTransformPseudoCode.Designer.cs">
-      <DependentUpon>frmTransformPseudoCode.cs</DependentUpon>
+    <Compile Include="frmPseudoCodeCompiler.Designer.cs">
+      <DependentUpon>frmPseudoCodeCompiler.cs</DependentUpon>
     </Compile>
+    <Compile Include="Logic\ArgumentModeler.cs" />
+    <Compile Include="Model\Command.cs" />
+    <Compile Include="Model\Instruction.cs" />
+    <Compile Include="Model\Label.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="frmAssemblyTraducer.resx">
+      <DependentUpon>frmAssemblyTraducer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmOutput.resx">
       <DependentUpon>frmOutput.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmTransformPseudoCode.resx">
-      <DependentUpon>frmTransformPseudoCode.cs</DependentUpon>
+    <EmbeddedResource Include="frmPseudoCodeCompiler.resx">
+      <DependentUpon>frmPseudoCodeCompiler.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

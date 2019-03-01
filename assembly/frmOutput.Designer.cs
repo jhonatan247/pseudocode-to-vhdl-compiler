@@ -35,6 +35,7 @@
             // txOutput
             // 
             this.txOutput.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txOutput.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txOutput.Location = new System.Drawing.Point(0, 0);
             this.txOutput.Multiline = true;
             this.txOutput.Name = "txOutput";
@@ -49,7 +50,8 @@
             this.Controls.Add(this.txOutput);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmOutput";
-            this.Text = "frmOutput";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "VHDL code";
             this.Load += new System.EventHandler(this.frmOutput_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
