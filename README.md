@@ -33,17 +33,18 @@ end;
 ```
 input a;
 input b
-
-if a = 1
-  c = 1
-elsif a = 2
-  c = a * 2
-elsif a = 3
-  c = b * a
-else
-  a *= 2
-endif
-
+while a > 0
+  if a = 1
+    c = 1
+  elsif a = 2
+    c = a * 2
+  elsif a = 3
+    c = b * a
+  else
+    b *= 2
+  endif
+  a -= 1;
+end
 a += b
 c = a + c
 
