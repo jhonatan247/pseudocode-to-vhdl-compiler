@@ -28,7 +28,7 @@ output b
 
 end;
 ```
-### Example pseudocode medium
+### Mid-level pseudocode example 
 
 ```
 input a;
