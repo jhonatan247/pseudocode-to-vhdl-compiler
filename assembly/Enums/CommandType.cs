@@ -5,7 +5,6 @@
         INPUT,
         OUTPUT,
         IF,
-        ONLYIF,
         WHILE,
         END,
         SET

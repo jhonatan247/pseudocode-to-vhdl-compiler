@@ -68,9 +68,9 @@ namespace assembly
             Initialize();
             foreach (string line in txInput.Lines)
             {
-                string reducedLine = line
+                string reducedLine = line.ToLower()
                     .Replace(";", "").Replace(" ( ", " ").Replace(" (", " ").Replace("( ", " ").Replace(" ) ", " ")
-                    .Replace(" )", " ").Replace(") ", " ").Replace("(", " ").Replace(")", " ").Trim().ToLower();
+                    .Replace(" )", " ").Replace(") ", " ").Replace("(", " ").Replace(")", " ").Replace("else if", "elseif").Trim();
                 if (line.Length > 0 ) {
                     if (line.Length >= 2 && line.Substring(0, 2) == "//") {
                         continue;
@@ -115,8 +115,7 @@ namespace assembly
                 case "if":
                     currentLabel = labels.Pop();
                     lastLabel = GetLastLabel(labels);
-                    string commadPrefix = currentLabel.type == CommandType.IF ? "" : "only";
-                    AddSequenceElement(commadPrefix + line[0] + line[2], ArgumentModeler.RemovePairsAndAdd(line, currentLabel.key.ToString(), lastLabel, currentLabel.key.ToString()));
+                    AddSequenceElement(line[0] + line[2], ArgumentModeler.RemovePairsAndAdd(line, currentLabel.lastRelation, lastLabel));
                     break;
                 case "while":
                     currentLabel = labels.Pop();
@@ -127,21 +126,21 @@ namespace assembly
                     currentLabel = labels.Peek();
                     if (currentLabel.countRelations == 0)
                     {
-                        currentLabel.type = CommandType.IF;
                         AddSequenceElement(line[0], ArgumentModeler.RemoveFirstAndAdd(line, currentLabel.endRelation));
                     }
                     else {
-                        throw new Exception("syntax error");
+                        throw new Exception("syntax error in else");
                     }
                     break;
                 case "elseif":
                 case "elsif":
                     currentLabel = labels.Peek();
-                    currentLabel.type = CommandType.IF;
                     //the format is the same as the while
+
+                    currentLabel.currentRelation = "elsif"+ currentLabel.key + currentLabel.countRelations;
                     AddSequenceElement("while" + line[2], ArgumentModeler.RemovePairsAndAdd(line, currentLabel.lastRelation, currentLabel.currentRelation));
-                    currentLabel.countRelations++;
                     currentLabel.lastRelation = currentLabel.currentRelation;
+                    currentLabel.countRelations++;
                     break;
                 case "endif":
                     if (IsALabel(lastLines.Peek()))
@@ -152,7 +151,7 @@ namespace assembly
                     {
                         relatedlLabel = "endif" + countLabel;
                     }
-                    labels.Push(new Model.Label(countLabel++, CommandType.ONLYIF, relatedlLabel));
+                    labels.Push(new Model.Label(countLabel++, CommandType.IF, relatedlLabel));
                     break;
                 case "endwhile":
                     if (IsALabel(lastLines.Peek()))

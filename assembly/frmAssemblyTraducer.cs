@@ -49,18 +49,25 @@ namespace assembly
         }
         private void btnGo_Click(object sender, EventArgs e)
         {
-            ProcessCode();
-            if (GenerateVHDL())
+            try
             {
+                ProcessCode();
+                GenerateVHDL();
                 ShowOutput();
             }
+            catch(Exception ex)
+            {
+                ShowErrorMessage(ex.Message);
+            }
         }
-        void ProcessCode() {
+        void ProcessCode()
+        {
             initialize();
 
             char separator = GetSeparator();
             sizeBits = GetBits();
             int pos_rom = 0;
+            int lineCount = 1;
             foreach (string line in txInput.Lines)
             {
                 if (line.Length > 0)
@@ -73,8 +80,17 @@ namespace assembly
                         code.Add(lineComponents);
                         pos_rom++;
                     }
+                    else
+                    {
+                        throw new Exception("Inconsistency at the line " + lineCount.ToString());
+                    }
                 }
+                lineCount++;
             }
+        }
+        void ShowErrorMessage(string e)
+        {
+            MessageBox.Show("An error has occurred:\n" + e.ToString(), "Assembly traducer", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
         void initialize()
         {
@@ -153,30 +169,24 @@ namespace assembly
                 catch { }
             }
         }
-        bool GenerateVHDL() {
+        void GenerateVHDL()
+        {
             int pc = 0;
-            foreach (string[] line in code) {
-                if (line.Length >= 3)
+            foreach (string[] line in code)
+            {
+                Instruction content = encoding[line[1]];
+                string vhdlLine = content.Value;
+                if (content.Type == TypeOfInstruction.PROGRAM)
                 {
-                    Instruction content = encoding[line[1]];
-                    string vhdlLine = content.Value;
-                    if (content.Type == TypeOfInstruction.PROGRAM)
-                    {
-                        vhdlLine += FromPositionToHex(labels[line[2]]);
-                    }
-                    else if (content.Type == TypeOfInstruction.DATA)
-                    {
-                        int value = getContstantOrVariable(line[2]);
-                        vhdlLine += FromPositionToHex(value);
-                    }
-                    finalVHDL += String.Format("{0} => X\"{1}\",\n", pc, vhdlLine);
-                    pc++;
+                    vhdlLine += FromPositionToHex(labels[line[2]]);
                 }
-                else
+                else if (content.Type == TypeOfInstruction.DATA)
                 {
-                    MessageBox.Show("There is a syntax error", "Assembly traducer", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return false;
+                    int value = getContstantOrVariable(line[2]);
+                    vhdlLine += FromPositionToHex(value);
                 }
+                finalVHDL += String.Format("{0} => X\"{1}\",\n", pc, vhdlLine);
+                pc++;
             }
             finalVHDL += "others => x\"000\");\n";
 
@@ -184,13 +194,13 @@ namespace assembly
 
             finalVHDL += "signal RAM : ram_mem_type:=(\n";
 
-            foreach (KeyValuePair<int,int> constantData in constants) {
+            foreach (KeyValuePair<int, int> constantData in constants)
+            {
                 string hexValue = FromConstantToHex(constantData.Key, sizeBits);
                 finalVHDL += String.Format("{0} => X\"{1}\",\n", constantData.Value, hexValue);
             }
 
             finalVHDL += String.Format("others => X\"{0}\");", FromConstantToHex(0, sizeBits));
-            return true;
         }
         string FromPositionToHex(int value)
         {

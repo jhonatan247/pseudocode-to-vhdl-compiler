@@ -44,67 +44,36 @@ namespace assembly.Data
                 "{0}subA{0}{2}\n" +
                 "{0}storeA{0}{1}\n"),
 
-            new Command("onlyif>=",
+            new Command("if>=",
                 "{4}{0}loadA{0}{1}\n" +
                 "{0}subA{0}{2}\n" +
                 "{0}jneg{0}{3}\n"),
-            new Command("onlyif>",
+            new Command("if>",
                 "{4}{0}loadA{0}{1}\n" +
                 "{0}subA{0}{2}\n" +
                 "{0}jneg{0}{3}\n" +
                 "{0}jz{0}{3}\n"),
-            new Command("onlyif==",
+            new Command("if==",
+                "{4}{0}loadA{0}{1}\n" +
+                "{0}subA{0}{2}\n" +
+                "{0}jnz{0}e{3}\n"),
+            new Command("if=",
                 "{4}{0}loadA{0}{1}\n" +
                 "{0}subA{0}{2}\n" +
                 "{0}jnz{0}{3}\n"),
-            new Command("onlyif=",
-                "{4}{0}loadA{0}{1}\n" +
-                "{0}subA{0}{2}\n" +
-                "{0}jnz{0}{3}\n"),
-            new Command("onlyif!=",
+            new Command("if!=",
                 "{4}{0}loadA{0}{1}\n" +
                 "{0}subA{0}{2}\n" +
                 "{0}jz{0}{3}\n"),
-            new Command("onlyif<=",
+            new Command("if<=",
                 "{4}{0}loadA{0}{1}\n" +
                 "{0}subA{0}{2}\n" +
                 "{0}jpos{0}{3}\n"),
-            new Command("onlyif<",
+            new Command("if<",
                 "{4}{0}loadA{0}{1}\n" +
                 "{0}subA{0}{2}\n" +
                 "{0}jpos{0}{3}\n" +
                 "{0}jz{0}{3}\n"),
-
-            new Command("if>=",
-                "{4}{0}loadA{0}{1}\n" +
-                "{0}subA{0}{2}\n" +
-                "{0}jneg{0}else{3}\n"),
-            new Command("if>",
-                "{4}{0}loadA{0}{1}\n" +
-                "{0}subA{0}{2}\n" +
-                "{0}jneg{0}else{3}\n" +
-                "{0}jz{0}else{3}\n"),
-            new Command("if==",
-                "{4}{0}loadA{0}{1}\n" +
-                "{0}subA{0}{2}\n" +
-                "{0}jnz{0}else{3}\n"),
-            new Command("if=",
-                "{4}{0}loadA{0}{1}\n" +
-                "{0}subA{0}{2}\n" +
-                "{0}jnz{0}else{3}\n"),
-            new Command("if!=",
-                "{4}{0}loadA{0}{1}\n" +
-                "{0}subA{0}{2}\n" +
-                "{0}jz{0}else{3}\n"),
-            new Command("if<=",
-                "{4}{0}loadA{0}{1}\n" +
-                "{0}subA{0}{2}\n" +
-                "{0}jpos{0}else{3}\n"),
-            new Command("if<",
-                "{4}{0}loadA{0}{1}\n" +
-                "{0}subA{0}{2}\n" +
-                "{0}jpos{0}else{3}\n" +
-                "{0}jz{0}else{3}\n"),
 
             new Command("else",
                 "{0}jmp{0}{1}\n"),
