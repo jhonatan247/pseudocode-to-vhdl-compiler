@@ -236,6 +236,9 @@ namespace assembly
                 else if (next[0] == "endif" || next[0] == "endwhile")
                 {
                     return next[0] + countLabel;
+                }else if (next[0] == "endfor")
+                {
+                    return "endwhile" + countLabel;
                 }
             }
             return "";
@@ -243,7 +246,7 @@ namespace assembly
         bool IsALabel(string[] lastLine)
         {
             return lastLine[0] == "endwhile" || lastLine[0] == "endif" || lastLine[0] == "end" ||
-                lastLine[0] == "while" || lastLine[0] == "else" || lastLine[0] == "elsif" || lastLine[0] == "elseif";
+                lastLine[0] == "while" || lastLine[0] == "else" || lastLine[0] == "elsif" || lastLine[0] == "elseif" || lastLine[0] == "for" || lastLine[0] == "endfor";
         }
         void AddSequenceElement(string key, string[] args)
         {

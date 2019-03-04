@@ -12,10 +12,10 @@ namespace assembly
 {
     public partial class frmOutput : Form
     {
-        public frmOutput(String output)
+        public frmOutput(string[] output)
         {
             InitializeComponent();
-            this.txOutput.Lines = output.Split('\n');
+            this.txOutput.Lines = output;
         }
 
         private void frmOutput_Load(object sender, EventArgs e)

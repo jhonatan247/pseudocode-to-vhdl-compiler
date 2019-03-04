@@ -12,16 +12,18 @@ namespace assembly
         Dictionary<string, Instruction> encoding;
         List<string[]> code;
         Dictionary<string, int> labels;
-        Dictionary<string, int> variables;
-        Dictionary<int, int> constants;
-        string finalVHDL;
+        SortedDictionary<string, int> variables;
+        SortedDictionary<int, int> constants;
+        List<string> finalVHDL;
         int sizeBits;
 
-        public frmAssemblyTraducer(string txt, int separatorIndx) {
+        public frmAssemblyTraducer(string txt, int separatorIndx)
+        {
             InitializeComponent();
 
             encoding = new Dictionary<string, Instruction>();
-            foreach (Instruction instruction in DataProvider.INSTRUCTIONS) {
+            foreach (Instruction instruction in DataProvider.INSTRUCTIONS)
+            {
                 encoding.Add(instruction.Name, instruction);
             }
 
@@ -49,16 +51,16 @@ namespace assembly
         }
         private void btnGo_Click(object sender, EventArgs e)
         {
-            //try
-            //{
+            try
+            {
                 ProcessCode();
                 GenerateVHDL();
                 ShowOutput();
-            //}
-            //catch(Exception ex)
-            //{
-            //    ShowErrorMessage(ex.Message);
-            //}
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage(ex.Message);
+            }
         }
         void ProcessCode()
         {
@@ -102,10 +104,10 @@ namespace assembly
         {
             code = new List<string[]>();
             labels = new Dictionary<string, int>();
-            variables = new Dictionary<string, int>();
-            constants = new Dictionary<int, int>();
-
-            finalVHDL = "signal ROM : rom_mem_type:=(\n";
+            variables = new SortedDictionary<string, int>();
+            constants = new SortedDictionary<int, int>();
+            finalVHDL = new List<string>();
+            finalVHDL.Add("signal ROM : rom_mem_type:=(");
         }
         char GetSeparator()
         {
@@ -122,57 +124,40 @@ namespace assembly
 
             return '\t';
         }
-        int GetBits() {
-            if (cbBits.SelectedItem == null) {
+        int GetBits()
+        {
+            if (cbBits.SelectedItem == null)
+            {
                 cbBits.SelectedIndex = 0;
             }
             return Convert.ToInt32(cbBits.SelectedItem);
         }
-        void AddLabel(string[] lineComponents, int pos_rom) {
-            if (lineComponents[0].Length != 0)
+        void AddLabel(string[] lineComponents, int pos_rom)
+        {
+            if (lineComponents[0].Length != 0 && !labels.ContainsKey(lineComponents[0]))
             {
-                try
-                {
-                    labels.Add(lineComponents[0], pos_rom);
-                }
-                catch { }
+                labels.Add(lineComponents[0], pos_rom);
             }
         }
         void AddOperand(string[] lineComponents, int pos_rom)
         {
-            if (lineComponents.Length >=3 && lineComponents[2].Length > 0)
+            if (lineComponents.Length >= 3 && lineComponents[2].Length > 0)
             {
-                if (Char.IsDigit(lineComponents[2][0]))
-                {
-                    AddContstantOrVariable(lineComponents[2], pos_rom);
-                }
-                else
-                {
-                    try
-                    {
-                        variables.Add(lineComponents[2], pos_rom);
-                    }
-                    catch { }
-                }
+                AddContstantOrVariable(lineComponents[2], pos_rom);
             }
         }
-        void AddContstantOrVariable(string value, int pos_rom) {
+        void AddContstantOrVariable(string value, int pos_rom)
+        {
             try
             {
                 int n = Convert.ToInt32(value);
-                try
-                {
+                if(!constants.ContainsKey(n))
                     constants.Add(n, pos_rom);
-                }
-                catch { }
             }
             catch
             {
-                try
-                {
+                if (!variables.ContainsKey(value))
                     variables.Add(value, pos_rom);
-                }
-                catch { }
             }
         }
         void GenerateVHDL()
@@ -191,22 +176,22 @@ namespace assembly
                     int value = getContstantOrVariable(line[2]);
                     vhdlLine += FromPositionToHex(value);
                 }
-                finalVHDL += String.Format("{0} => X\"{1}\",\n", pc, vhdlLine);
+                finalVHDL.Add(String.Format("{0} => X\"{1}\",", pc, vhdlLine));
                 pc++;
             }
-            finalVHDL += "others => x\"000\");\n";
+            finalVHDL.Add(String.Format("others => x\"000\");"));
 
-            finalVHDL += "//\n";
+            finalVHDL.Add(String.Format("//"));
 
-            finalVHDL += "signal RAM : ram_mem_type:=(\n";
+            finalVHDL.Add(String.Format("signal RAM : ram_mem_type:=("));
 
             foreach (KeyValuePair<int, int> constantData in constants)
             {
                 string hexValue = FromConstantToHex(constantData.Key, sizeBits);
-                finalVHDL += String.Format("{0} => X\"{1}\",\n", constantData.Value, hexValue);
+                finalVHDL.Add(String.Format(string.Format("{0} => X\"{1}\",", constantData.Value, hexValue)));
             }
 
-            finalVHDL += String.Format("others => X\"{0}\");", FromConstantToHex(0, sizeBits));
+            finalVHDL.Add(String.Format(string.Format("others => X\"{0}\");", FromConstantToHex(0, sizeBits))));
         }
         string FromPositionToHex(int value)
         {
@@ -223,14 +208,16 @@ namespace assembly
                 return variables[key];
             }
         }
-        string FromConstantToHex(int value, int sizeBits) {
+        string FromConstantToHex(int value, int sizeBits)
+        {
             int size = sizeBits / 4;
             return value.ToString("X").PadLeft(size, '0').ToUpper();
         }
 
-        void ShowOutput() {
+        void ShowOutput()
+        {
             Hide();
-            new frmOutput(finalVHDL).ShowDialog();
+            new frmOutput(finalVHDL.ToArray()).ShowDialog();
             Show();
         }
 
@@ -239,5 +226,5 @@ namespace assembly
             Close();
         }
     }
-    
+
 }
