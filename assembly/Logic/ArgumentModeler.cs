@@ -77,7 +77,7 @@ namespace assembly.Logic
             newArgs[0] = SEPERATOR.ToString();
             for (int i = 1, j = 1; i < args.Length; i += 2, j++)
             {
-                newArgs[j] = args[i];
+                newArgs[j] = args[i]; 
             }
             newArgs[args.Length / 2 + 1] = extra1;
             newArgs[args.Length / 2 + 2] = extra2;
@@ -95,6 +95,13 @@ namespace assembly.Logic
             }
             newArgs[args.Length / 2 + 2] = extra;
             return newArgs;
+        }
+        public static string[] cutArguments(string[] args, int indxIni, int indxEnd) {
+            string[] cutArgs = new string[indxEnd - indxIni + 1];
+            for (int i = indxIni, count = 0; i <= indxEnd; i ++, count ++) {
+                cutArgs[count] = args[i];
+            }
+            return cutArgs;
         }
     }
 }

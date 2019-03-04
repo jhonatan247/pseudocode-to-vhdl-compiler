@@ -14,13 +14,14 @@ namespace assembly
         int countLabel;
         Stack<string> assemblySequence;
         Dictionary<String, String> encodingFormat;
-        Stack<String[]> code;
+        Stack<string[]> code;
 
         public frmPseudoCodeCompiler()
         {
             InitializeComponent();
             encodingFormat = new Dictionary<string, string>();
-            foreach (Command command in DataProvider.COMMANDS) {
+            foreach (Command command in DataProvider.COMMANDS)
+            {
                 encodingFormat.Add(command.Name, command.Format);
             }
         }
@@ -35,18 +36,19 @@ namespace assembly
         }
         private void btnGo_Click(object sender, EventArgs e)
         {
-            try
-            {
+            //try
+            //{
                 ArgumentModeler.SEPERATOR = GetSeparator();
                 ProcessCode();
                 GenerateAssembly();
                 Hide();
                 new frmAssemblyTraducer(GetAssemblyCode(), cbSeparator.SelectedIndex).ShowDialog();
                 Show();
-            }
-            catch {
-                MessageBox.Show("There is a syntax error", "Pseudo code compiler", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            //}
+            //catch
+            //{
+            //    MessageBox.Show("There is a syntax error", "Pseudo code compiler", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //}
         }
         char GetSeparator()
         {
@@ -70,15 +72,17 @@ namespace assembly
             {
                 string reducedLine = line.ToLower()
                     .Replace(";", "").Replace(" ( ", " ").Replace(" (", " ").Replace("( ", " ").Replace(" ) ", " ")
-                    .Replace(" )", " ").Replace(") ", " ").Replace("(", " ").Replace(")", " ").Replace("else if", "elseif").Trim();
-                if (line.Length > 0 ) {
-                    if (line.Length >= 2 && line.Substring(0, 2) == "//") {
+                    .Replace(" )", " ").Replace(") ", " ").Replace("(", " ").Replace(")", " ").Replace("else if", "elseif").Replace("end if", "endif").Replace("end while", "endwhile").Replace("end for", "endfor").Trim();
+                if (line.Length > 0)
+                {
+                    if (line.Length >= 2 && line.Substring(0, 2) == "//")
+                    {
                         continue;
                     }
                     string[] lineComponents = reducedLine.Split();
                     code.Push(lineComponents);
                 }
-            
+
             }
         }
         void Initialize()
@@ -87,29 +91,31 @@ namespace assembly
             code = new Stack<string[]>();
             assemblySequence = new Stack<string>();
         }
-        void GenerateAssembly() {
+        void GenerateAssembly()
+        {
             Stack<Model.Label> labels = new Stack<Model.Label>();
             Stack<string[]> lastLines = new Stack<string[]>();
             string lastLabel = "";
 
-            while (code.Count > 0) {
+            while (code.Count > 0)
+            {
                 lastLabel = FormatLineAndGetLabel(labels, lastLines, lastLabel);
             }
         }
-        string FormatLineAndGetLabel(Stack<Model.Label> labels, Stack<string[]> lastLines, string lastLabel) {
+        string FormatLineAndGetLabel(Stack<Model.Label> labels, Stack<string[]> lastLines, string lastLabel)
+        {
             Model.Label currentLabel;
             string relatedlLabel = "";
             string[] line = code.Pop();
-
             switch (line[0])
             {
+                case "end":
+                    lastLabel = "end";
+                    AddSequenceElement(line[0], ArgumentModeler.RemoveFirstAndAdd(line, lastLabel));
+                    break;
                 case "input":
                 case "output":
                     lastLabel = GetLastLabel(labels);
-                    AddSequenceElement(line[0], ArgumentModeler.RemoveFirstAndAdd(line, lastLabel));
-                    break;
-                case "end":
-                    lastLabel = "end";
                     AddSequenceElement(line[0], ArgumentModeler.RemoveFirstAndAdd(line, lastLabel));
                     break;
                 case "if":
@@ -122,13 +128,22 @@ namespace assembly
                     lastLabel = "while" + currentLabel.key;
                     AddSequenceElement(line[0] + line[2], ArgumentModeler.RemovePairsAndAdd(line, currentLabel.endRelation, lastLabel));
                     break;
+                case "for":
+                    code.Push(ArgumentModeler.cutArguments(line, 1, 3));
+                    code.Push(string.Format("while {0} {1} {2}", line[4], line[5], line[6]).Split());
+                    code.Push(ArgumentModeler.cutArguments(line, 7, line.Length - 1));
+                    if (code.Peek().Length == 0) {
+                        code.Pop();
+                    }
+                    break;
                 case "else":
                     currentLabel = labels.Peek();
                     if (currentLabel.countRelations == 0)
                     {
                         AddSequenceElement(line[0], ArgumentModeler.RemoveFirstAndAdd(line, currentLabel.endRelation));
                     }
-                    else {
+                    else
+                    {
                         throw new Exception("syntax error in else");
                     }
                     break;
@@ -137,7 +152,7 @@ namespace assembly
                     currentLabel = labels.Peek();
                     //the format is the same as the while
 
-                    currentLabel.currentRelation = "elsif"+ currentLabel.key + currentLabel.countRelations;
+                    currentLabel.currentRelation = "elsif" + currentLabel.key + currentLabel.countRelations;
                     AddSequenceElement("while" + line[2], ArgumentModeler.RemovePairsAndAdd(line, currentLabel.lastRelation, currentLabel.currentRelation));
                     currentLabel.lastRelation = currentLabel.currentRelation;
                     currentLabel.countRelations++;
@@ -154,6 +169,7 @@ namespace assembly
                     labels.Push(new Model.Label(countLabel++, CommandType.IF, relatedlLabel));
                     break;
                 case "endwhile":
+                case "endfor":
                     if (IsALabel(lastLines.Peek()))
                     {
                         relatedlLabel = lastLabel;
@@ -164,12 +180,12 @@ namespace assembly
                     }
                     labels.Push(new Model.Label(countLabel++, CommandType.WHILE, relatedlLabel));
                     lastLabel = GetLastLabel(labels);
-                    AddSequenceElement(line[0], ArgumentModeler.RemoveFirstAndAdd(line, "while" + (countLabel - 1), lastLabel));
+                    AddSequenceElement("endwhile", ArgumentModeler.RemoveFirstAndAdd(line, "while" + (countLabel - 1), lastLabel));
                     break;
                 default:
                     lastLabel = GetLastLabel(labels);
                     //aritmetical operation
-                    if (line.Length >= 4)
+                    if (line.Length == 5)
                     {
                         if (line[3] == "*")
                         {
@@ -180,16 +196,26 @@ namespace assembly
                             AddSequenceElement(line[1] + line[3], ArgumentModeler.RemoveOddsAndAdd(line, lastLabel));
                         }
                     }
-                    //assignment
-                    else
+                    //Increment and decrement  or
+                    //Assignment
+                    else if (line.Length == 3)
                     {
                         if (line[1] == "*=")
                         {
                             AddMultipicationToCode(line[0], line[0], line[2]);
                         }
-                        else {
+                        else
+                        {
                             AddSequenceElement(line[1], ArgumentModeler.RemoveOddsAndAdd(line, lastLabel));
                         }
+                    }
+                    else if (line.Length == 2)
+                    {
+                        AddSequenceElement(line[0], ArgumentModeler.RemoveFirstAndAdd(line, lastLabel));
+                    }
+                    else
+                    {
+                        throw new Exception();
                     }
                     break;
             }
@@ -214,8 +240,9 @@ namespace assembly
             }
             return "";
         }
-        bool IsALabel(string[] lastLine) {
-            return lastLine[0] == "endwhile" || lastLine[0] == "endif" || lastLine[0] == "end" || 
+        bool IsALabel(string[] lastLine)
+        {
+            return lastLine[0] == "endwhile" || lastLine[0] == "endif" || lastLine[0] == "end" ||
                 lastLine[0] == "while" || lastLine[0] == "else" || lastLine[0] == "elsif" || lastLine[0] == "elseif";
         }
         void AddSequenceElement(string key, string[] args)
@@ -223,7 +250,8 @@ namespace assembly
             assemblySequence.Push(String.Format(encodingFormat[key], args));
         }
 
-        void AddMultipicationToCode(string product, string multiplier, string multiplying) {
+        void AddMultipicationToCode(string product, string multiplier, string multiplying)
+        {
             code.Push(string.Format("auxmul00000 = {0}", multiplier).Split());
             code.Push("auxmul00001 = 0".Split());
             code.Push("while auxmul00000 > 0".Split());
@@ -232,9 +260,11 @@ namespace assembly
             code.Push(string.Format("{0} = auxmul00001", product).Split());
         }
 
-        string GetAssemblyCode() {
+        string GetAssemblyCode()
+        {
             String final = "";
-            while (assemblySequence.Count > 0) {
+            while (assemblySequence.Count > 0)
+            {
                 final += assemblySequence.Pop();
             }
             return final;

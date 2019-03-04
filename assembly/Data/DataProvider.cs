@@ -43,6 +43,14 @@ namespace assembly.Data
                 "{3}{0}loadA{0}{1}\n" +
                 "{0}subA{0}{2}\n" +
                 "{0}storeA{0}{1}\n"),
+            new Command("++",
+                "{2}{0}loadA{0}{1}\n" +
+                "{0}addA{0}1\n" +
+                "{0}storeA{0}{1}\n"),
+            new Command("--",
+                "{2}{0}loadA{0}{1}\n" +
+                "{0}subA{0}1\n" +
+                "{0}storeA{0}{1}\n"),
 
             new Command("if>=",
                 "{4}{0}loadA{0}{1}\n" +

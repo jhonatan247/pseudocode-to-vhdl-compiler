@@ -49,16 +49,16 @@ namespace assembly
         }
         private void btnGo_Click(object sender, EventArgs e)
         {
-            try
-            {
+            //try
+            //{
                 ProcessCode();
                 GenerateVHDL();
                 ShowOutput();
-            }
-            catch(Exception ex)
-            {
-                ShowErrorMessage(ex.Message);
-            }
+            //}
+            //catch(Exception ex)
+            //{
+            //    ShowErrorMessage(ex.Message);
+            //}
         }
         void ProcessCode()
         {
@@ -68,6 +68,7 @@ namespace assembly
             sizeBits = GetBits();
             int pos_rom = 0;
             int lineCount = 1;
+            int accumulatedLenght = 0;
             foreach (string line in txInput.Lines)
             {
                 if (line.Length > 0)
@@ -82,15 +83,20 @@ namespace assembly
                     }
                     else
                     {
+                        txInput.SelectionStart = accumulatedLenght;
+                        txInput.SelectionLength = line.Length;
                         throw new Exception("Inconsistency at the line " + lineCount.ToString());
                     }
                 }
+                accumulatedLenght += line.Length + 1;
                 lineCount++;
             }
         }
         void ShowErrorMessage(string e)
         {
             MessageBox.Show("An error has occurred:\n" + e.ToString(), "Assembly traducer", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            txInput.Focus();
         }
         void initialize()
         {
