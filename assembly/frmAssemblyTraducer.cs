@@ -4,16 +4,18 @@ using System.Windows.Forms;
 using assembly.Model;
 using assembly.Enums;
 using assembly.Data;
+using C5;
 
 namespace assembly
 {
     public partial class frmAssemblyTraducer : Form
     {
-        Dictionary<string, Instruction> encoding;
         List<string[]> code;
-        Dictionary<string, int> labels;
-        SortedDictionary<string, int> variables;
-        SortedDictionary<int, int> constants;
+        
+        TreeDictionary<string, Instruction> encoding;
+        TreeDictionary<string, int> labels;
+        TreeDictionary<string, int> variables;
+        TreeDictionary<int, int> constants;
         List<string> finalVHDL;
         int sizeBits;
 
@@ -21,7 +23,7 @@ namespace assembly
         {
             InitializeComponent();
 
-            encoding = new Dictionary<string, Instruction>();
+            encoding = new TreeDictionary<string, Instruction>();
             foreach (Instruction instruction in DataProvider.INSTRUCTIONS)
             {
                 encoding.Add(instruction.Name, instruction);
@@ -34,7 +36,7 @@ namespace assembly
         {
             InitializeComponent();
 
-            encoding = new Dictionary<string, Instruction>();
+            encoding = new TreeDictionary<string, Instruction>();
             foreach (Instruction instruction in DataProvider.INSTRUCTIONS)
             {
                 encoding.Add(instruction.Name, instruction);
@@ -90,7 +92,7 @@ namespace assembly
                         throw new Exception("Inconsistency at the line " + lineCount.ToString());
                     }
                 }
-                accumulatedLenght += line.Length + 1;
+                accumulatedLenght += line.Length + 2;
                 lineCount++;
             }
         }
@@ -103,9 +105,9 @@ namespace assembly
         void initialize()
         {
             code = new List<string[]>();
-            labels = new Dictionary<string, int>();
-            variables = new SortedDictionary<string, int>();
-            constants = new SortedDictionary<int, int>();
+            labels = new TreeDictionary<string, int>();
+            variables = new TreeDictionary<string, int>();
+            constants = new TreeDictionary<int, int>();
             finalVHDL = new List<string>();
             finalVHDL.Add("signal ROM : rom_mem_type:=(");
         }
@@ -134,7 +136,7 @@ namespace assembly
         }
         void AddLabel(string[] lineComponents, int pos_rom)
         {
-            if (lineComponents[0].Length != 0 && !labels.ContainsKey(lineComponents[0]))
+            if (lineComponents[0].Length != 0 && !labels.Contains(lineComponents[0]))
             {
                 labels.Add(lineComponents[0], pos_rom);
             }
@@ -151,12 +153,12 @@ namespace assembly
             try
             {
                 int n = Convert.ToInt32(value);
-                if(!constants.ContainsKey(n))
+                if (!constants.Contains(n))
                     constants.Add(n, pos_rom);
             }
             catch
             {
-                if (!variables.ContainsKey(value))
+                if (!variables.Contains(value))
                     variables.Add(value, pos_rom);
             }
         }
@@ -185,7 +187,7 @@ namespace assembly
 
             finalVHDL.Add(String.Format("signal RAM : ram_mem_type:=("));
 
-            foreach (KeyValuePair<int, int> constantData in constants)
+            foreach (C5.KeyValuePair<int, int> constantData in constants)
             {
                 string hexValue = FromConstantToHex(constantData.Key, sizeBits);
                 finalVHDL.Add(String.Format(string.Format("{0} => X\"{1}\",", constantData.Value, hexValue)));

@@ -12,9 +12,7 @@ C:\Users\torr111838\Desktop\assembly\assembly\bin\Debug\assembly.exe.config
 C:\Users\torr111838\Desktop\assembly\assembly\bin\Debug\assembly.exe
 C:\Users\torr111838\Desktop\assembly\assembly\bin\Debug\assembly.pdb
 C:\Users\torr111838\Desktop\assembly\assembly\obj\Debug\assembly.csprojAssemblyReference.cache
-C:\Users\torr111838\Desktop\assembly\assembly\obj\Debug\assembly.Form1.resources
 C:\Users\torr111838\Desktop\assembly\assembly\obj\Debug\assembly.frmOutput.resources
-C:\Users\torr111838\Desktop\assembly\assembly\obj\Debug\assembly.frmTransformPseudoCode.resources
 C:\Users\torr111838\Desktop\assembly\assembly\obj\Debug\assembly.Properties.Resources.resources
 C:\Users\torr111838\Desktop\assembly\assembly\obj\Debug\assembly.csproj.GenerateResource.cache
 C:\Users\torr111838\Desktop\assembly\assembly\obj\Debug\assembly.csproj.CoreCompileInputs.cache
@@ -22,3 +20,8 @@ C:\Users\torr111838\Desktop\assembly\assembly\obj\Debug\assembly.exe
 C:\Users\torr111838\Desktop\assembly\assembly\obj\Debug\assembly.pdb
 C:\Users\jhona\source\repos\assembly\assembly\obj\Debug\assembly.frmAssemblyTraducer.resources
 C:\Users\jhona\source\repos\assembly\assembly\obj\Debug\assembly.frmPseudoCodeCompiler.resources
+C:\Users\torr111838\Desktop\assembly\assembly\obj\Debug\assembly.frmAssemblyTraducer.resources
+C:\Users\torr111838\Desktop\assembly\assembly\obj\Debug\assembly.frmPseudoCodeCompiler.resources
+C:\Users\torr111838\Desktop\assembly\assembly\bin\Debug\C5.dll
+C:\Users\torr111838\Desktop\assembly\assembly\bin\Debug\C5.pdb
+C:\Users\torr111838\Desktop\assembly\assembly\obj\Debug\assembly.csproj.CopyComplete

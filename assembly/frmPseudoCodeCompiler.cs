@@ -36,19 +36,19 @@ namespace assembly
         }
         private void btnGo_Click(object sender, EventArgs e)
         {
-            //try
-            //{
+            try
+            {
                 ArgumentModeler.SEPERATOR = GetSeparator();
                 ProcessCode();
                 GenerateAssembly();
                 Hide();
                 new frmAssemblyTraducer(GetAssemblyCode(), cbSeparator.SelectedIndex).ShowDialog();
                 Show();
-            //}
-            //catch
-            //{
-            //    MessageBox.Show("There is a syntax error", "Pseudo code compiler", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //}
+            }
+            catch
+            {
+                MessageBox.Show("There is a syntax error", "Pseudo code compiler", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         char GetSeparator()
         {
