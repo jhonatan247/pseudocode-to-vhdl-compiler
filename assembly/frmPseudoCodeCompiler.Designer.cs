@@ -45,7 +45,7 @@
             // 
             this.txInput.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txInput.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txInput.ForeColor = System.Drawing.Color.DarkOrange;
+            this.txInput.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.txInput.Location = new System.Drawing.Point(0, 39);
             this.txInput.Multiline = true;
             this.txInput.Name = "txInput";
@@ -101,7 +101,7 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(231, 13);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(56, 13);
+            this.label2.Size = new System.Drawing.Size(60, 13);
             this.label2.TabIndex = 4;
             this.label2.Text = "Separator:";
             // 
@@ -136,6 +136,7 @@
             this.Controls.Add(this.txInput);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel2);
+            this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(442, 447);
             this.Name = "frmPseudoCodeCompiler";

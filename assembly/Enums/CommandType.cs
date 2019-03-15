@@ -2,11 +2,8 @@
 {
     public enum CommandType
     {
-        INPUT,
-        OUTPUT,
         IF,
         WHILE,
-        END,
-        SET
+        FOR
     }
 }

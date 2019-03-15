@@ -71,6 +71,8 @@
       <DependentUpon>frmPseudoCodeCompiler.cs</DependentUpon>
     </Compile>
     <Compile Include="Logic\ArgumentModeler.cs" />
+    <Compile Include="Logic\PseudoCodeToHarvardCompiler.cs" />
+    <Compile Include="Model\CodeLine.cs" />
     <Compile Include="Model\Command.cs" />
     <Compile Include="Model\Instruction.cs" />
     <Compile Include="Model\Label.cs" />

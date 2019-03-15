@@ -10,7 +10,113 @@ namespace assembly.Data
 {
     public class DataProvider
     {
-        public static Command[] COMMANDS = {
+        public static Command[] INTEL_COMMANDS = {
+            new Command("=-",
+                "{4}{0}loadA{0}{2}\n" +
+                "{0}subA{0}{3}\n" +
+                "{0}storeA{0}{1}\n"),
+            new Command("=+",
+                "{4}{0}loadA{0}{2}\n" +
+                "{0}addA{0}{3}\n" +
+                "{0}storeA{0}{1}\n"),
+            new Command("=*",
+                "{4}{0}loadA{0}{2}\n" +
+                "{0}addA{0}{3}\n" +
+                "{0}storeA{0}{1}\n"),
+            new Command("=",
+                "{3}{0}loadA{0}{2}\n" +
+                "{0}storeA{0}{1}\n"),
+            new Command("+=",
+                "{3}{0}loadA{0}{1}\n" +
+                "{0}addA{0}{2}\n" +
+                "{0}storeA{0}{1}\n"),
+            new Command("-=",
+                "{3}{0}loadA{0}{1}\n" +
+                "{0}subA{0}{2}\n" +
+                "{0}storeA{0}{1}\n"),
+            new Command("++",
+                "{2}{0}loadA{0}{1}\n" +
+                "{0}addA{0}1\n" +
+                "{0}storeA{0}{1}\n"),
+            new Command("--",
+                "{2}{0}loadA{0}{1}\n" +
+                "{0}subA{0}1\n" +
+                "{0}storeA{0}{1}\n"),
+
+            new Command("if>=",
+                "{4}{0}loadA{0}{1}\n" +
+                "{0}subA{0}{2}\n" +
+                "{0}jneg{0}{3}\n"),
+
+            new Command("if>",
+                "{4}{0}loadA{0}{1}\n" +
+                "{0}subA{0}{2}\n" +
+                "{0}jneg{0}{3}\n" +
+                "{0}jz{0}{3}\n"),
+
+            new Command("if==",
+                "{4}{0}loadA{0}{1}\n" +
+                "{0}subA{0}{2}\n" +
+                "{0}jnz{0}e{3}\n"),
+            new Command("if=",
+                "{4}{0}loadA{0}{1}\n" +
+                "{0}subA{0}{2}\n" +
+                "{0}jnz{0}{3}\n"),
+            new Command("if!=",
+                "{4}{0}loadA{0}{1}\n" +
+                "{0}subA{0}{2}\n" +
+                "{0}jz{0}{3}\n"),
+            new Command("if<=",
+                "{4}{0}loadA{0}{1}\n" +
+                "{0}subA{0}{2}\n" +
+                "{0}jpos{0}{3}\n"),
+            new Command("if<",
+                "{4}{0}loadA{0}{1}\n" +
+                "{0}subA{0}{2}\n" +
+                "{0}jpos{0}{3}\n" +
+                "{0}jz{0}{3}\n"),
+
+            new Command("else",
+                "{0}jmp{0}{1}\n"),
+
+
+            new Command("while>=",
+                "{4}{0}loadA{0}{1}\n" +
+                "{0}subA{0}{2}\n" +
+                "{0}jneg{0}{3}\n"),
+            new Command("while>",
+                "{4}{0}loadA{0}{1}\n" +
+                "{0}subA{0}{2}\n" +
+                "{0}jneg{0}{3}\n" +
+                "{0}jz{0}{3}\n"),
+            new Command("while==",
+                "{4}{0}loadA{0}{1}\n" +
+                "{0}subA{0}{2}\n" +
+                "{0}jnz{0}{3}\n"),
+            new Command("while=",
+                "{4}{0}loadA{0}{1}\n" +
+                "{0}subA{0}{2}\n" +
+                "{0}jnz{0}{3}\n"),
+            new Command("while!=",
+                "{4}{0}loadA{0}{1}\n" +
+                "{0}subA{0}{2}\n" +
+                "{0}jz{0}{3}\n"),
+            new Command("while<=",
+                "{4}{0}loadA{0}{1}\n" +
+                "{0}subA{0}{2}\n" +
+                "{0}jpos{0}{3}\n"),
+            new Command("while<",
+                "{4}{0}loadA{0}{1}\n" +
+                "{0}subA{0}{2}\n" +
+                "{0}jpos{0}{3}\n" +
+                "{0}jz{0}{3}\n"),
+
+
+            new Command("endwhile",
+                "{2}{0}jmp{0}{1}\n")
+        };
+
+        public static Command[] HARVARD_COMMANDS = {
             new Command("input",
                 "{2}{0}inA{0}\n" +
                 "{0}storeA{0}{1}\n"),
